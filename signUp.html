@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    <style>
+    body {
+        background-color: khaki;
+        font-family: Arial, sans-serif;
+    }
+
+    #signUp-container {
+        height: 350px;
+        width: 250px;
+        margin: 50px auto;
+        border: none;
+        border-radius: 10px;
+        background-color: darkblue;
+        position: relative;
+        padding-top: 1px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #signUp-container input {
+        display: block;
+        box-sizing: border-box;
+        width: 220px;
+        height: 35px;
+        margin-top: 10px;
+        margin-left: 15px;
+        padding: 8px 10px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        font-size: 13px;
+    }
+
+    #signUp-container input:focus {
+        border: 2px solid rgb(238, 130, 130);
+    }
+
+    #signUp-container input::placeholder {
+        color: #777;
+    }
+
+    #signUp-container button {
+        background-color: rgb(238, 130, 130);
+        color: white;
+        font-weight: bold;
+        width: 220px;
+        margin-left: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+        height: 40px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #signUp-container button:hover {
+        background-color: rgba(238, 130, 130, 0.84);
+        transform: scale(1.02);
+    }
+
+    .signIn {
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        margin: 0;
+        font-size: 12px;
+    }
+
+    .signIn a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .signIn a:hover {
+        color: rgb(238, 130, 130);
+        text-decoration: underline;
+    }
+
+    #signUp-container input:first-of-type {
+        margin-top: 40px;
+    }
+
+    #output {
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        margin-top: 12px;
+        padding: 0 10px;
+    }
+</style>
+<body>
+    <div class="" id="signUp-container">
+        <p class="signIn"><a href="">signIn></a></p>
+        <input type="text" placeholder="First Name" id="firstName">
+        <input type="text" placeholder="last Name" id="lastName">
+        <input type="text" placeholder="Other Names" id="otherNames">
+        <input type="text" placeholder="Password" id="password">
+        <input type="password" placeholder="confirm Password" id="confirmPassword">
+        <button onclick="signUp()">Sign Up</button>
+        <div id="output"></div>
+        
+    </div>
+</body>
+<script>
+   // let inputs = document.querySelectorAll('#signUp-container input')
+    let firstName = document.getElementById('firstName')
+    let lastName = document.getElementById('lastName')
+    let otherNames = document.getElementById('otherNames')
+    let password = document.getElementById('password')
+    let confirmPassword = document.getElementById('confirmPassword')
+    let output = document.getElementById('output')
+    
+ //   console.log(inputs);
+    
+    
+    function signUp() {
+        firstNameValue = firstName.value.trim()
+        lastNameValue = lastName.value.trim()
+        otherNamesValue = otherNames.value.trim()
+        passwordValue = password.value.trim()
+        confirmPasswordValue = confirmPassword.value.trim()
+      //  inputsValue = inputs.value.trim()
+   // console.log(inputsValue);
+        if (!firstNameValue || !lastNameValue || !otherNamesValue || !passwordValue || !confirmPasswordValue) {
+            output.innerHTML = `<div style="color: red; font-weight: bold;">All fields are required</div>`
+            return;
+           
+        } 
+         
+        if(passwordValue.length < 8 || confirmPasswordValue.length < 8){
+            output.innerHTML = `<div style="color: red; font-weight: bold;">Passwords must be 8 characters</div>`
+            return; 
+        }
+        if(confirmPasswordValue !== passwordValue ) {
+            output.innerHTML = `<div style="color: red; font-weight: bold;">Password is not correct</div>`
+            console.log('Password is not correct');
+            return;
+            
+        } 
+        else{
+            output.innerHTML = `<div style="color: green; font-weight: bold;">signUp successful</div>`
+        } 
+        
+    }
+</script>
+</html>
