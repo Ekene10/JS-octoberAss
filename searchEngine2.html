@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+ <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 16px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #312e81 100%);
+            color: #e2e8f0;
+        }
+
+        /* the main wrapper */
+        body > div {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 28px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        #inp1 {
+            flex: 1;
+            min-width: 0;
+            padding: 16px 20px;
+            font-size: 1rem;
+            color: #f8fafc;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        #inp1::placeholder {
+            color: #94a3b8;
+        }
+
+        #inp1:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25);
+        }
+
+        button {
+            padding: 16px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* results area */
+        #output {
+            flex-basis: 100%;
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        #output p {
+            padding: 16px 12px;
+            text-align: center;
+            text-transform: capitalize;
+            font-weight: 500;
+            color: #f1f5f9;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            transition: transform 0.2s, background 0.2s, border-color 0.2s;
+            animation: pop 0.3s ease;
+        }
+
+        #output p:hover {
+            transform: translateY(-4px) scale(1.03);
+            background: rgba(129, 140, 248, 0.25);
+            border-color: #818cf8;
+        }
+
+        @keyframes pop {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body > div {
+                padding: 18px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+    <div>
+        <input type="text" oninput="inputSearch()" id="inp1">
+    <button onclick="submit()">Search</button>
+    <div id="output"></div>
+    </div>
+</body>
+<script>
+    let foods =  [
+        'rice', 'beans', 'potato', 'bread', 'chips', 'plantain', 'pap', 'yam',
+        'jollof rice', 'fried rice', 'white rice', 'coconut rice', 'ofada rice',
+        'moi moi', 'akara', 'ewa agoyin', 'dodo', 'boli', 'suya', 'asun',
+        'pounded yam', 'amala', 'eba', 'fufu', 'semo', 'tuwo shinkafa', 'wheat',
+        'egusi soup', 'efo riro', 'ogbono soup', 'okra soup', 'afang soup',
+        'edikaikong', 'banga soup', 'oha soup', 'bitterleaf soup', 'pepper soup', 'nkwobi',
+        'ayamase', 'stew', 'fried stew', 'ofe akwu', 'abacha', 'akamu', 'ukwa',
+        'yam porridge', 'beans porridge', 'plantain porridge', 'gizdodo', 'kilishi',
+        'puff puff', 'chin chin', 'meat pie', 'sausage roll', 'doughnut', 'buns',
+        'indomie', 'spaghetti', 'macaroni', 'noodles', 'pizza', 'burger', 'shawarma',
+        'sandwich', 'fried chicken', 'grilled chicken', 'fish', 'catfish', 'tilapia',
+        'eggs', 'omelette', 'sardine', 'corned beef', 'cheese', 'yoghurt',
+        'apple', 'banana', 'orange', 'mango', 'pineapple', 'watermelon', 'pawpaw',
+        'guava', 'cashew', 'coconut', 'groundnut', 'garden egg', 'cucumber',
+        'tomato', 'onion', 'pepper', 'carrot', 'cabbage', 'sweet potato', 'cassava',
+        'garri', 'kunu', 'zobo', 'palm wine', 'smoothie', 'ice cream', 'cake'
+    ]
+     let input = document.getElementById('inp1')
+    let output = document.getElementById('output')
+    
+   function displayFood(list) {
+    if (list.length === 0) {
+        output.innerHTML = '<p>No food found</p>'
+       return
+    }
+    output.innerHTML = list.map(food => `<p>${food}</p>`).join('')
+     
+
+   }
+   //  output.innerHTML = `<p>${foods}</p>`
+       
+   // output.innerHTML = filteredFoods
+        console.log(foods);
+ function inputSearch() {
+   let inputValue = input.value.trim().toLowerCase();
+     let filteredFoods = foods.filter((food , i , arr )=>{
+       return food.toLocaleLowerCase().includes(inputValue)
+    })
+       
+     displayFood(filteredFoods)
+        
+}
+     displayFood(foods)
+    function submit() {
+     let inputValue = input.value.trim().toLowerCase();  
+     console.log('You searched for:', inputValue)
+        inputSearch()
+      
+    //    console.log(inputValue);
+         
+
+    }
+   // output.innerHTML = foods ;
+   
+    
+   
+</script>
+</html>
